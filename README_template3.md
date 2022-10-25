@@ -52,7 +52,7 @@ Or
 az extension update --name spring-cloud
 ```    
 
-### Quickstart
+### Demo preparations
 
 1. Create a new folder and clone the repositories to your environment 
 
@@ -181,7 +181,32 @@ az spring-cloud storage add \
  --name $SHARE_NAME
 ``` 
 
-13. Config your PetClinic App
+13. Add cache config
+
+```bash
+
+KEY0=`az redis list-keys --name ${PROJECT_NAME}-redis --resource-group ${RESOURCE_GROUP} | jq -r .primaryKey`
+echo "{\"singleServerConfig\":{\"address\": \"redis://${PROJECT_NAME}-redis.redis.cache.windows.net:6379\", \"password\": \"$KEY0\"}}" > redisson.json
+cat redisson.json
+
+cp redisson.json spring-petclinic-${CUSTOMERS_SERVICE}/src/main/resources/
+cp redisson.json spring-petclinic-${VETS_SERVICE}/src/main/resources/
+cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/ 
+
+```
+
+### Quickstart
+
+1. Login,  Load all required variables and set defaults in your environment 
+
+```bash
+az login --use-device-code
+
+source ./.env
+az account set --subscription ${SUBSCRIPTION}
+```
+
+2. Config your PetClinic App
 
 Open `application.yml` in spring-petclinic-microservices-config repo
 
@@ -219,7 +244,7 @@ git remote add origin https://github.com/<your gh account name>/spring-petclinic
 git push -u origin master
 ``` 
 
-15. Config your PetClinic App
+3. Config your PetClinic App
 
 Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
 
@@ -255,27 +280,13 @@ az spring-cloud config-server set \
  --name ${SPRING_CLOUD_SERVICE}
 ``` 
 
-16. Add cache config
-
-```bash
-
-KEY0=`az redis list-keys --name ${PROJECT_NAME}-redis --resource-group ${RESOURCE_GROUP} | jq -r .primaryKey`
-echo "{\"singleServerConfig\":{\"address\": \"redis://${PROJECT_NAME}-redis.redis.cache.windows.net:6379\", \"password\": \"$KEY0\"}}" > redisson.json
-cat redisson.json
-
-cp redisson.json spring-petclinic-${CUSTOMERS_SERVICE}/src/main/resources/
-cp redisson.json spring-petclinic-${VETS_SERVICE}/src/main/resources/
-cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/ 
-
-```
-
-17. Build your app
+4. Build your app
 
 ```bash
 mvn clean package -DskipTests -Denv=cloud
 ```
 
-18. Create apps 
+5. Create apps 
 
 ```bash
 bin/spring-cloud.sh create api-gateway
@@ -286,7 +297,7 @@ bin/spring-cloud.sh create visits-service
 bin/spring-cloud.sh create consumer-service
 ``` 
 
-19. Append storage to the apps
+6. Append storage to the apps
 
 ```bash
 bin/spring-cloud.sh append-persistent-storage customers-service
@@ -295,7 +306,7 @@ bin/spring-cloud.sh append-persistent-storage visits-service
 bin/spring-cloud.sh append-persistent-storage consumer-service
 ```
 
-20. Deploy apps
+7. Deploy apps
 
 ```bash
 bin/spring-cloud.sh deploy api-gateway
@@ -306,7 +317,7 @@ bin/spring-cloud.sh deploy visits-service
 bin/spring-cloud.sh deploy consumer-service
 ```
 
-21. Browse logs
+8. Browse logs
 
 ```bash
 bin/spring-cloud.sh logs api-gateway
@@ -323,8 +334,6 @@ To run the demo, follow these steps:
 
 1. Demo deployments
 
-![Spring Cloud Apps](media/step-springcloud-apps.png)
-
 2. Demo PetClinic app
 
 Open PetClinic from your Browser
@@ -332,55 +341,28 @@ Open PetClinic from your Browser
 ```
 https://[your project name]-springcloud-api-gateway.azuremicroservices.io
 ```
-![api-gateway overview](media/step-api-gateway.png)
-
-Navigate from menu on the top
-
-![Petclinic Main](media/step-petclinic-main.png)
-![Petclinic Customers](media/step-petclinic-customers.png)
-![Petclinic Visits](media/step-petclinic-visits.png)
-![Petclinic Vets](media/step-petclinic-vets.png) 
 
 3. Demo Azure Monitor 
 
 Open your Application Insights instance 
 
-![Application Insights Overview](media/step-appinsights-overview.png)
-
 Navigate to the Performance blade
-
-![Application Insights Performance, Operations](media/step-appinsights-performance-operations.png)
 
 Click on Dependencies, you can see the performance number for dependencies to the services
 
-![Application Insights Performance, Dependencies](media/step-appinsights-performance-dependencies.png)
-
 Click on Roles, you can see the performance number to compare across instances and roles
-
-![Application Insights Performance, Roles](media/step-appinsights-performance-roles.png)
 
 Navigate to the Application Map blade
 
-![Application Insights Application Map](media/step-appinsights-applicationmap.png)
-
 Navigate to the Failures blade
-
-![Application Insights Failures, Dependencies](media/step-appinsights-failures-dependencies.png)
 
 Click on Exceptions, you can see a collection of exceptions
 
-![Application Insights Failures, Exceptions](media/step-appinsights-failures-exceptions.png)
-
 Click on an exception to see the end-to-end transaction and stacktrace in context
-
-![Application Insights Failures, Exceptions Details](media/step-appinsights-failures-exceptions-details.png)
 
 Navigate to the Metrics blade
 
-![Application Insights Metrics](media/step-appinsights-metrics-live.png)
-
 Navigate to Live Metrics blade, you can see live metrics on screen with low latencies < 1 second
-![Application Insights Live Metrics](media/step-appinsights-metrics.png)
 
 4. Demo API test from command line
 
@@ -409,8 +391,7 @@ curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io
 curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io/api/customer/actuator/configprops
 ``` 
 
-
-## Resources <TBD>
+## Resources 
 
 - [document](README_all.md) for instructions with all details
 - [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3

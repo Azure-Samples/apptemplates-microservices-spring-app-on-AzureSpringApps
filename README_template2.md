@@ -332,15 +332,27 @@ bin/spring-cloud.sh logs consumer-service
 
 To run the demo, follow these steps:
 
-1. Demo PetClinic app
+1. Demo deployments
+
+![Spring Cloud Apps](media/step-springcloud-apps.png)
+
+2. Demo PetClinic app
 
 Open PetClinic from your Browser
 
 ```
 https://[your project name]-springcloud-api-gateway.azuremicroservices.io
 ```
+![api-gateway overview](media/step-api-gateway.png)
 
-2. Demo Azure Monitor 
+Navigate from menu on the top
+
+![Petclinic Main](media/step-petclinic-main.png)
+![Petclinic Customers](media/step-petclinic-customers.png)
+![Petclinic Visits](media/step-petclinic-visits.png)
+![Petclinic Vets](media/step-petclinic-vets.png) 
+
+3. Demo Azure Monitor 
 
 Open your Application Insights instance 
 
