@@ -12,14 +12,10 @@ This project provides the following features:
 * Bind applications to Azure services
 * Open and test the applications
 * Monitor the applications
-* Integrate with APIM using Swagger doc
-* Automate deployments using GitHub Actions
 
 ## Getting Started
 
 ### Prerequisites
-
-(ideally very short, if any)
 
 - Bash on Ubuntu host or WSL2, Cloudshell
 - [Azure CLI version 2.17.1, higher or latest](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) 
@@ -32,20 +28,19 @@ This project provides the following features:
 
 ### Installation
 
-Before you start, install/udpate the Azure Spring Apps extension for the Azure CLI using the following command
+Before you start, install/udpate the Azure Spring Apps extension for the Azure CLI using following commands
 
 ```bash
-    az extension add --name spring-cloud
+az extension add --name spring-cloud
 ```
 
 Or 
 
 ```bash
-    az extension update --name spring-cloud
+az extension update --name spring-cloud
 ```    
 
-### Quickstart
-(Add steps to get up and running quickly)
+### Demo preparations
 
 1. Create a new folder and clone the repositories to your environment 
 
@@ -162,7 +157,22 @@ quit
 "
 ```
 
-12. Adding Storage Account
+### Quickstart
+
+1. Login to Azure from CLI
+
+```bash
+az login --use-device-code
+```
+
+2. Load all required variables and set defaults in your environment 
+
+```bash
+source ./.env
+az account set --subscription ${SUBSCRIPTION}
+```
+
+3. Adding Storage Account
 
 ```bash
 KEY0=`az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME  | jq -r .[0].value`
@@ -174,11 +184,11 @@ az spring-cloud storage add \
  --name $SHARE_NAME
 ``` 
 
-13. Config your PetClinic App
+4. Config your PetClinic App
 
 Open `application.yml` in spring-petclinic-microservices-config repo
 
-Update all resource names and all values under `spring.cloud.azure.eventhub`
+Update all resource names with your project name and all values under `spring.cloud.azure.eventhub`
 
 ```yaml
 spring:
@@ -212,7 +222,7 @@ git remote add origin https://github.com/<your gh account name>/spring-petclinic
 git push -u origin master
 ``` 
 
-15. Config your PetClinic App
+5. Config your PetClinic App
 
 Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
 
@@ -240,7 +250,6 @@ spring:
 
 Your developer token is from your GitHub account setttings. See [this](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for further details 
 
-
 Add app configs to your Azure Spring Apps
 
 ```bash
@@ -249,7 +258,7 @@ az spring-cloud config-server set \
  --name ${SPRING_CLOUD_SERVICE}
 ``` 
 
-16. Add cache config
+6. Add cache config
 
 ```bash
 
@@ -263,13 +272,13 @@ cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/
 
 ```
 
-17. Build your app
+7. Build your app
 
 ```bash
 mvn clean package -DskipTests -Denv=cloud
 ```
 
-18. Create apps 
+8. Create apps 
 
 ```bash
 bin/spring-cloud.sh create api-gateway
@@ -280,7 +289,7 @@ bin/spring-cloud.sh create visits-service
 bin/spring-cloud.sh create consumer-service
 ``` 
 
-19. Append storage to the apps
+9. Append storage to the apps
 
 ```bash
 bin/spring-cloud.sh append-persistent-storage customers-service
@@ -289,7 +298,7 @@ bin/spring-cloud.sh append-persistent-storage visits-service
 bin/spring-cloud.sh append-persistent-storage consumer-service
 ```
 
-20. Deploy apps
+10. Deploy apps
 
 ```bash
 bin/spring-cloud.sh deploy api-gateway
@@ -300,7 +309,7 @@ bin/spring-cloud.sh deploy visits-service
 bin/spring-cloud.sh deploy consumer-service
 ```
 
-21. Browse logs
+11. Browse logs
 
 ```bash
 bin/spring-cloud.sh logs api-gateway
@@ -313,20 +322,56 @@ bin/spring-cloud.sh logs consumer-service
 
 ## Demo
 
-A demo app is included to show how to use the project.
-
 To run the demo, follow these steps:
 
-(Add steps to start up the demo)
+1. Demo PetClinic app
 
-1. Demo PetClinic app - Open PetClinic from your Browser
+Open PetClinic from your Browser
 
 ```
 https://[your project name]-springcloud-api-gateway.azuremicroservices.io
 ```
 
-2. Demo Azure Monitor - Open your Application Insights instance 
+2. Demo Azure Monitor 
 
+Open your Application Insights instance 
+
+![Application Insights Overview](media/step-appinsights-overview.png)
+
+Navigate to the Performance blade
+
+![Application Insights Performance, Operations](media/step-appinsights-performance-operations.png)
+
+Click on Dependencies, you can see the performance number for dependencies to the services
+
+![Application Insights Performance, Dependencies](media/step-appinsights-performance-dependencies.png)
+
+Click on Roles, you can see the performance number to compare across instances and roles
+
+![Application Insights Performance, Roles](media/step-appinsights-performance-roles.png)
+
+Navigate to the Application Map blade
+
+![Application Insights Application Map](media/step-appinsights-applicationmap.png)
+
+Navigate to the Failures blade
+
+![Application Insights Failures, Dependencies](media/step-appinsights-failures-dependencies.png)
+
+Click on Exceptions, you can see a collection of exceptions
+
+![Application Insights Failures, Exceptions](media/step-appinsights-failures-exceptions.png)
+
+Click on an exception to see the end-to-end transaction and stacktrace in context
+
+![Application Insights Failures, Exceptions Details](media/step-appinsights-failures-exceptions-details.png)
+
+Navigate to the Metrics blade
+
+![Application Insights Metrics](media/step-appinsights-metrics-live.png)
+
+Navigate to Live Metrics blade, you can see live metrics on screen with low latencies < 1 second
+![Application Insights Live Metrics](media/step-appinsights-metrics.png)
 
 3. Demo API test from command line
 
@@ -355,10 +400,9 @@ curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io
 curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io/api/customer/actuator/configprops
 ``` 
 
-## Resources <TBD>
+## Resources 
 
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+- [document](README_all.md) for instructions with all details
+- [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3
+- [document](docs/petclinic-swagger.md) for managed testing pm Azure Load Test
+- [document](docs/petclinic-swagger.md) for CI/CD on Github Actions
