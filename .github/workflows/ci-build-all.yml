@@ -1,0 +1,76 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: CI, Build all modules
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
+
+env:
+  PROJECT_NAME: 'spcm031'
+  AZURE_RESOURCE_GROUP_NAME: 'spcm031-rg'
+
+  API_GATEWAY: api-gateway
+  ADMIN_SERVER: admin-server
+  CUSTOMERS_SERVICE: customers-service
+  VETS_SERVICE: vets-service
+  VISITS_SERVICE: visits-service
+  CONSUMER_SERVICE: consumer-service
+
+  AZURE_CRED: ${{ secrets.AZURE_CREDENTIALS01 }}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout GitHub Actions 
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          
+      - name: Login via Azure CLI
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ env.AZURE_CRED }}
+
+      - name: Run script file
+        run: |
+           jq --version
+
+           KEY0=`az redis list-keys --name ${{ env.PROJECT_NAME }}-redis --resource-group ${{ env.AZURE_RESOURCE_GROUP_NAME }} | jq -r .primaryKey`
+           echo "{\"singleServerConfig\":{\"address\": \"redis://${{ env.PROJECT_NAME }}-redis.redis.cache.windows.net:6379\", \"password\": \"$KEY0\"}}" > redisson.json
+           cat redisson.json
+
+           cp redisson.json spring-petclinic-${{ env.CUSTOMERS_SERVICE }}/src/main/resources/
+           cp redisson.json spring-petclinic-${{ env.VETS_SERVICE }}/src/main/resources/
+           cp redisson.json spring-petclinic-${{ env.VISITS_SERVICE }}/src/main/resources/
+
+        shell: bash
+
+      - name: Package
+        run: |
+          mvn -B package -DskipTests -Denv=cloud
+
+      # Log out from Azure
+      - name: Log out from Azure
+        id: azure_logout
+        uses: azure/cli@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az logout

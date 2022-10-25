@@ -1,0 +1,6 @@
+{
+   "singleServerConfig": {
+      "address": [your redis connection string, redis://],
+      "password": [your redis  password],
+   }
+}

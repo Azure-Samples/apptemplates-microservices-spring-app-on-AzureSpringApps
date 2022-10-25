@@ -1,0 +1,8 @@
+version: v0.1
+testName: petclinic-test-apis
+testPlan: petclinic-test-apis.jmx
+description: 'PetClinic api tests'
+engineInstances: 1
+failureCriteria:
+  - avg(response_time_ms) > 300
+  - percentage(error) > 50

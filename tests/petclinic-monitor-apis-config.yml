@@ -1,0 +1,8 @@
+version: v0.1
+testName: petclinic-monitor-apis
+testPlan: petclinic-monitor-apis.jmx
+description: 'PetClinic api monitorings'
+engineInstances: 1
+failureCriteria:
+  - avg(response_time_ms) > 300
+  - percentage(error) > 50

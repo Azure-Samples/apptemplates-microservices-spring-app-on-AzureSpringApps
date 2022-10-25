@@ -1,0 +1,360 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.3.255.40792",
+      "templateHash": "9360246038799943187"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "westus",
+      "metadata": {
+        "description": "Location to create all resources"
+      }
+    },
+    "projectName": {
+      "type": "string",
+      "defaultValue": "spcm013",
+      "metadata": {
+        "description": "Project name"
+      }
+    },
+    "deploymentMode": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "metadata": {
+        "description": "Asking deployment mode, Basic, Standard"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "vVNETName": "[format('{0}-vnet', parameters('projectName'))]",
+    "vSPCName": "[format('{0}-springcloud', parameters('projectName'))]",
+    "vSAName": "[format('{0}sa', parameters('projectName'))]",
+    "vSKU0": {
+      "name": "B0",
+      "tier": "Basic"
+    },
+    "vSKU1": {
+      "name": "S0",
+      "tier": "Standard"
+    }
+  },
+  "resources": [
+    {
+      "condition": "[equals(parameters('deploymentMode'), 'Standard')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-vnet",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "vnet_name": {
+            "value": "[variables('vVNETName')]"
+          },
+          "vnet_addressPrefix": {
+            "value": "10.21.0.0/16"
+          },
+          "subnets": {
+            "value": [
+              {
+                "name": "default",
+                "addressPrefix": "10.21.0.0/24"
+              },
+              {
+                "name": "sub1",
+                "addressPrefix": "10.21.1.0/24"
+              },
+              {
+                "name": "sub2",
+                "addressPrefix": "10.21.2.0/24"
+              }
+            ]
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "9877530714024353165"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "vnet_name": {
+              "type": "string",
+              "defaultValue": "vnet-usw-021"
+            },
+            "vnet_addressPrefix": {
+              "type": "string",
+              "defaultValue": "10.21.0.0/16"
+            },
+            "subnets": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "default",
+                  "addressPrefix": "10.21.0.0/24"
+                },
+                {
+                  "name": "sub1",
+                  "addressPrefix": "10.21.1.0/24"
+                },
+                {
+                  "name": "sub2",
+                  "addressPrefix": "10.21.2.0/24"
+                }
+              ]
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2020-11-01",
+              "name": "[parameters('vnet_name')]",
+              "location": "[parameters('gLocation')]",
+              "properties": {
+                "copy": [
+                  {
+                    "name": "subnets",
+                    "count": "[length(parameters('subnets'))]",
+                    "input": {
+                      "name": "[parameters('subnets')[copyIndex('subnets')].name]",
+                      "properties": {
+                        "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]",
+                        "delegations": [],
+                        "privateEndpointNetworkPolicies": "Enabled",
+                        "privateLinkServiceNetworkPolicies": "Enabled"
+                      }
+                    }
+                  }
+                ],
+                "addressSpace": {
+                  "addressPrefixes": [
+                    "[parameters('vnet_addressPrefix')]"
+                  ]
+                },
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-storage-account",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "storageAccounts": {
+            "value": "[variables('vSAName')]"
+          },
+          "fileShareName": {
+            "value": "share01"
+          },
+          "blobName": {
+            "value": "blob01"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "3042052822312464447"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "storageAccounts": {
+              "type": "string",
+              "defaultValue": "spcm014sa01"
+            },
+            "fileShareName": {
+              "type": "string",
+              "defaultValue": "share01"
+            },
+            "blobName": {
+              "type": "string",
+              "defaultValue": "blob01"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-06-01",
+              "name": "[parameters('storageAccounts')]",
+              "location": "[parameters('gLocation')]",
+              "sku": {
+                "name": "Standard_LRS"
+              },
+              "kind": "StorageV2",
+              "properties": {
+                "defaultToOAuthAuthentication": false,
+                "allowCrossTenantReplication": true,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "virtualNetworkRules": [],
+                  "ipRules": [],
+                  "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                  "requireInfrastructureEncryption": false,
+                  "services": {
+                    "file": {
+                      "keyType": "Account",
+                      "enabled": true
+                    },
+                    "blob": {
+                      "keyType": "Account",
+                      "enabled": true
+                    }
+                  },
+                  "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+              }
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+              "apiVersion": "2021-06-01",
+              "name": "[format('{0}/default/{1}', parameters('storageAccounts'), parameters('blobName'))]",
+              "properties": {},
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+              "apiVersion": "2021-04-01",
+              "name": "[format('{0}/default/{1}', parameters('storageAccounts'), parameters('fileShareName'))]",
+              "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-springcloud",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "spc_name": {
+            "value": "[variables('vSPCName')]"
+          },
+          "vnet_name": {
+            "value": "[variables('vVNETName')]"
+          },
+          "spc_sku": {
+            "value": "[if(equals(parameters('deploymentMode'), 'Basic'), variables('vSKU0'), variables('vSKU1'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "11443530352889509283"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "spc_name": {
+              "type": "string",
+              "defaultValue": "spc-usw-001"
+            },
+            "vnet_name": {
+              "type": "string",
+              "defaultValue": "vnet-usw-021"
+            },
+            "spc_CIDR": {
+              "type": "string",
+              "defaultValue": "10.0.0.0/16,10.1.0.0/16,10.2.0.1/16"
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().name]"
+            },
+            "spc_sku": {
+              "type": "object",
+              "defaultValue": {
+                "name": "S0",
+                "tier": "Standard"
+              }
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.AppPlatform/Spring",
+              "apiVersion": "2021-09-01-preview",
+              "name": "[parameters('spc_name')]",
+              "location": "[parameters('gLocation')]",
+              "sku": "[parameters('spc_sku')]",
+              "properties": {
+                "networkProfile": "[if(equals(parameters('spc_sku').tier, 'Basic'), null(), createObject('serviceRuntimeSubnetId', format('{0}/subnets/sub1', resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_name'))), 'appSubnetId', format('{0}/subnets/sub2', resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_name'))), 'serviceCidr', parameters('spc_CIDR'), 'serviceRuntimeNetworkResourceGroup', format('{0}-{1}-svcrt', parameters('resourceGroupName'), parameters('spc_name')), 'appNetworkResourceGroup', format('{0}-{1}-app', parameters('resourceGroupName'), parameters('spc_name'))))]"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

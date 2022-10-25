@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: [your config repo url]
+          username: [your login id at GitHub]
+          password: [your developer token at GitHub]
+          label: main
+        native:
+          search-locations: classpath:.
+          #searchLocations: file:///${GIT_REPO}
+  profiles:
+    active: native

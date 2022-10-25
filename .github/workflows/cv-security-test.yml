@@ -1,0 +1,39 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: CV, Security Test - OWASP ZAP
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 * * *'
+
+env:
+  TARGET_DOMAIN: "spcm031-springcloud-api-gateway.azuremicroservices.io"
+
+jobs:
+
+  securityTest:
+    name: Penetration testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub Actions 
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+#      - name: ZAP Full Scan
+#        uses: zaproxy/action-full-scan@v0.3.0
+#        with:
+#          target: 'https://${{ env.TARGET_DOMAIN }}/'
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.6.1
+        with:
+          target: 'https://${{ env.TARGET_DOMAIN }}/'
+
+      - name: ZAP API Scan
+        uses: zaproxy/action-api-scan@v0.1.0
+        with:
+          target: 'https://${{ env.TARGET_DOMAIN }}/api/customer/owners/4'
+

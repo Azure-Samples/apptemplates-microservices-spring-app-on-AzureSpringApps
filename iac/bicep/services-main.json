@@ -1,0 +1,704 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.3.255.40792",
+      "templateHash": "7644024350771305538"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "westus",
+      "metadata": {
+        "description": "Location to create all resources"
+      }
+    },
+    "projectName": {
+      "type": "string",
+      "defaultValue": "spcm013",
+      "metadata": {
+        "description": "Project name"
+      }
+    },
+    "database_name": {
+      "type": "string",
+      "defaultValue": "petclinic",
+      "metadata": {
+        "description": "Database name"
+      }
+    },
+    "mysql_adminUsername": {
+      "type": "string",
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "MySQL username"
+      }
+    },
+    "mysql_adminPassword": {
+      "type": "string",
+      "defaultValue": "pass&1234",
+      "metadata": {
+        "description": "MySQL password"
+      }
+    },
+    "servicePrincipal": {
+      "type": "object",
+      "defaultValue": {
+        "clientId": "--",
+        "tenantId": "--",
+        "objectId": "--"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "vVaultsName": "[format('{0}-keyvault', parameters('projectName'))]",
+    "vMySQLName": "[format('{0}-mysql', parameters('projectName'))]",
+    "vEventHubName": "[format('{0}-eventhub', parameters('projectName'))]",
+    "vRedisName": "[format('{0}-redis', parameters('projectName'))]",
+    "vCosmoDBName": "[format('{0}-cosmosdb', parameters('projectName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-keyvault",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "vaults_name": {
+            "value": "[variables('vVaultsName')]"
+          },
+          "servicePrincipal_clientId": {
+            "value": "[parameters('servicePrincipal').clientId]"
+          },
+          "servicePrincipal_tenantId": {
+            "value": "[parameters('servicePrincipal').tenantId]"
+          },
+          "servicePrincipal_objectId": {
+            "value": "[parameters('servicePrincipal').objectId]"
+          },
+          "secret_spring_datasource_password": {
+            "value": "[parameters('mysql_adminPassword')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "14282032140009897836"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "vaults_name": {
+              "type": "string",
+              "defaultValue": "spcm014-keyvault"
+            },
+            "vaults_sku": {
+              "type": "object",
+              "defaultValue": {
+                "family": "A",
+                "name": "Standard"
+              }
+            },
+            "servicePrincipal_clientId": {
+              "type": "string",
+              "defaultValue": "----"
+            },
+            "servicePrincipal_tenantId": {
+              "type": "string",
+              "defaultValue": "----"
+            },
+            "servicePrincipal_objectId": {
+              "type": "string",
+              "defaultValue": "----"
+            },
+            "secret_spring_datasource_password": {
+              "type": "string",
+              "defaultValue": "petclinic"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[parameters('vaults_name')]",
+              "location": "[parameters('gLocation')]",
+              "properties": {
+                "sku": "[parameters('vaults_sku')]",
+                "tenantId": "[parameters('servicePrincipal_tenantId')]",
+                "networkAcls": {
+                  "bypass": "AzureServices",
+                  "defaultAction": "Allow"
+                },
+                "accessPolicies": [
+                  {
+                    "tenantId": "[parameters('servicePrincipal_tenantId')]",
+                    "objectId": "[parameters('servicePrincipal_objectId')]",
+                    "applicationId": "[parameters('servicePrincipal_clientId')]",
+                    "permissions": {
+                      "keys": [
+                        "all"
+                      ],
+                      "secrets": [
+                        "all"
+                      ],
+                      "certificates": [
+                        "all"
+                      ]
+                    }
+                  }
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": false,
+                "vaultUri": "[format('https://{0}.vault.azure.net/', parameters('vaults_name'))]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+              }
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults/secrets",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/spring-datasource-password', parameters('vaults_name'))]",
+              "properties": {
+                "value": "[parameters('secret_spring_datasource_password')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_name'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-mysql",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "mysql_name": {
+            "value": "[variables('vMySQLName')]"
+          },
+          "database_name": {
+            "value": "[parameters('database_name')]"
+          },
+          "mysql_adminUsername": {
+            "value": "[parameters('mysql_adminUsername')]"
+          },
+          "mysql_adminPassword": {
+            "value": "[parameters('mysql_adminPassword')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "17877435519012063318"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "mysql_name": {
+              "type": "string",
+              "defaultValue": "mysql-usw-001"
+            },
+            "mysql_sku": {
+              "type": "object",
+              "defaultValue": {
+                "name": "GP_Gen5_4",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 4
+              }
+            },
+            "mysql_version": {
+              "type": "string",
+              "defaultValue": "5.7"
+            },
+            "mysql_adminUsername": {
+              "type": "string",
+              "defaultValue": "azureuser"
+            },
+            "mysql_adminPassword": {
+              "type": "string",
+              "defaultValue": "pass&1234"
+            },
+            "database_name": {
+              "type": "string",
+              "defaultValue": "petclinic"
+            },
+            "firewall_rules": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "allAzureIPs",
+                  "startIpAddress": "0.0.0.0",
+                  "endIpAddress": "0.0.0.0"
+                },
+                {
+                  "name": "myDevMachine1",
+                  "startIpAddress": "218.152.13.89",
+                  "endIpAddress": "218.152.13.89"
+                },
+                {
+                  "name": "myDevMachine2",
+                  "startIpAddress": "172.16.10.8",
+                  "endIpAddress": "172.16.10.8"
+                }
+              ]
+            },
+            "database_config": {
+              "type": "array",
+              "defaultValue": [
+                {
+                  "name": "wait_timeout",
+                  "value": "2147483",
+                  "source": "user-override"
+                }
+              ]
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.DBForMySQL/servers",
+              "apiVersion": "2017-12-01",
+              "name": "[parameters('mysql_name')]",
+              "location": "[parameters('gLocation')]",
+              "sku": "[parameters('mysql_sku')]",
+              "properties": {
+                "createMode": "Default",
+                "administratorLogin": "[parameters('mysql_adminUsername')]",
+                "administratorLoginPassword": "[parameters('mysql_adminPassword')]",
+                "storageProfile": {
+                  "storageMB": 102400,
+                  "backupRetentionDays": 7,
+                  "geoRedundantBackup": "Disabled",
+                  "storageAutogrow": "Enabled"
+                },
+                "version": "[parameters('mysql_version')]",
+                "sslEnforcement": "Disabled",
+                "minimalTlsVersion": "TLSEnforcementDisabled",
+                "infrastructureEncryption": "Disabled",
+                "publicNetworkAccess": "Enabled"
+              }
+            },
+            {
+              "type": "Microsoft.DBForMySQL/servers/databases",
+              "apiVersion": "2017-12-01",
+              "name": "[format('{0}/{1}', parameters('mysql_name'), parameters('database_name'))]",
+              "properties": {
+                "charset": "latin1",
+                "collation": "latin1_swedish_ci"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysql_name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "fwrule_name_resource",
+                "count": "[length(parameters('firewall_rules'))]"
+              },
+              "type": "Microsoft.DBForMySQL/servers/firewallRules",
+              "apiVersion": "2017-12-01",
+              "name": "[format('{0}/{1}', parameters('mysql_name'), parameters('firewall_rules')[copyIndex()].name)]",
+              "properties": {
+                "startIpAddress": "[parameters('firewall_rules')[copyIndex()].startIpAddress]",
+                "endIpAddress": "[parameters('firewall_rules')[copyIndex()].endIpAddress]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysql_name'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
+              "apiVersion": "2017-12-01",
+              "name": "[format('{0}/Default', parameters('mysql_name'))]",
+              "properties": {
+                "state": "Enabled",
+                "disabledAlerts": [
+                  ""
+                ],
+                "emailAddresses": [
+                  ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysql_name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "mysql_name_wait_timeout",
+                "count": "[length(parameters('database_config'))]"
+              },
+              "type": "Microsoft.DBForMySQL/servers/configurations",
+              "apiVersion": "2017-12-01",
+              "name": "[format('{0}/{1}', parameters('mysql_name'), parameters('database_config')[copyIndex()].name)]",
+              "properties": {
+                "value": "[parameters('database_config')[copyIndex()].value]",
+                "source": "[parameters('database_config')[copyIndex()].source]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DBForMySQL/servers', parameters('mysql_name'))]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-eventhub",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "eventhub_ns_name": {
+            "value": "[variables('vEventHubName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "12500876809778508599"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "eventhub_ns_name": {
+              "type": "string",
+              "defaultValue": "eh-usw-001"
+            },
+            "eventhub_ns_sku": {
+              "type": "object",
+              "defaultValue": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 1
+              }
+            },
+            "eventhub_name": {
+              "type": "string",
+              "defaultValue": "eh001"
+            },
+            "eventhub_policy_name": {
+              "type": "string",
+              "defaultValue": "tester01"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.EventHub/namespaces",
+              "apiVersion": "2021-11-01",
+              "name": "[parameters('eventhub_ns_name')]",
+              "location": "[parameters('gLocation')]",
+              "sku": "[parameters('eventhub_ns_sku')]",
+              "properties": {
+                "disableLocalAuth": false,
+                "zoneRedundant": false,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": true
+              }
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name'))]",
+              "properties": {
+                "messageRetentionInDays": 1,
+                "partitionCount": 2,
+                "status": "Active"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhub_ns_name'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/networkRuleSets",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/default', parameters('eventhub_ns_name'))]",
+              "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": []
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventhub_ns_name'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/PreviewDataPolicy', format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')))]",
+              "properties": {
+                "rights": [
+                  "Listen"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[0], split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[1])]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), parameters('eventhub_policy_name'))]",
+              "properties": {
+                "rights": [
+                  "Listen",
+                  "Send"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[0], split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[1])]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/$Default', format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')))]",
+              "properties": {},
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[0], split(format('{0}/{1}', parameters('eventhub_ns_name'), parameters('eventhub_name')), '/')[1])]"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-redis",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "redis_name": {
+            "value": "[variables('vRedisName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "15227515743952242385"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "redis_name": {
+              "type": "string",
+              "defaultValue": "redis-usw-001"
+            },
+            "redis_sku": {
+              "type": "object",
+              "defaultValue": {
+                "name": "Standard",
+                "family": "C",
+                "capacity": 1
+              }
+            },
+            "redis_version": {
+              "type": "string",
+              "defaultValue": "4.0.14"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Cache/Redis",
+              "apiVersion": "2020-12-01",
+              "name": "[parameters('redis_name')]",
+              "location": "[parameters('gLocation')]",
+              "properties": {
+                "redisVersion": "[parameters('redis_version')]",
+                "sku": "[parameters('redis_sku')]",
+                "enableNonSslPort": true,
+                "publicNetworkAccess": "Enabled",
+                "redisConfiguration": {
+                  "maxmemory-reserved": "50",
+                  "maxfragmentationmemory-reserved": "50",
+                  "maxmemory-delta": "50"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "create-cosmosdb",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "gLocation": {
+            "value": "[parameters('location')]"
+          },
+          "csms_name": {
+            "value": "[variables('vCosmoDBName')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.3.255.40792",
+              "templateHash": "4714889692757092673"
+            }
+          },
+          "parameters": {
+            "gLocation": {
+              "type": "string",
+              "defaultValue": "westus"
+            },
+            "csms_name": {
+              "type": "string",
+              "defaultValue": "csms-usw-001"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.DocumentDB/databaseAccounts",
+              "apiVersion": "2021-10-15",
+              "name": "[parameters('csms_name')]",
+              "location": "[parameters('gLocation')]",
+              "kind": "MongoDB",
+              "identity": {
+                "type": "None"
+              },
+              "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                  "schemaType": "FullFidelity"
+                },
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "consistencyPolicy": {
+                  "defaultConsistencyLevel": "Session",
+                  "maxIntervalInSeconds": 5,
+                  "maxStalenessPrefix": 100
+                },
+                "apiProperties": {
+                  "serverVersion": "4.0"
+                },
+                "locations": [
+                  {
+                    "locationName": "[parameters('gLocation')]",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                  }
+                ],
+                "cors": [],
+                "capabilities": [
+                  {
+                    "name": "EnableMongo"
+                  },
+                  {
+                    "name": "DisableRateLimitingResponses"
+                  },
+                  {
+                    "name": "EnableServerless"
+                  }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                  "type": "Periodic",
+                  "periodicModeProperties": {
+                    "backupIntervalInMinutes": 240,
+                    "backupRetentionIntervalInHours": 8,
+                    "backupStorageRedundancy": "Geo"
+                  }
+                },
+                "networkAclBypassResourceIds": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

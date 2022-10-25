@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8888
+  application:
+    name: consumer
+---
+spring:
+  config:
+    activate:
+      on-profile: docker

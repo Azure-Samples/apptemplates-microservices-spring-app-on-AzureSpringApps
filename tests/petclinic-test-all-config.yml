@@ -1,0 +1,8 @@
+version: v0.1
+testName: petclinic-test-all
+testPlan: petclinic-test-all.jmx
+description: 'PetClinic test all'
+engineInstances: 1
+failureCriteria:
+  - avg(response_time_ms) > 300
+  - percentage(error) > 50
