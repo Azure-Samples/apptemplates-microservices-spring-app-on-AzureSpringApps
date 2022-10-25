@@ -219,7 +219,7 @@ git remote add origin https://github.com/<your gh account name>/spring-petclinic
 git push -u origin master
 ``` 
 
-15. Config your PetClinic App
+14. Config your Azure Spring App
 
 Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
 
@@ -255,7 +255,7 @@ az spring-cloud config-server set \
  --name ${SPRING_CLOUD_SERVICE}
 ``` 
 
-16. Add cache config
+15. Add cache config
 
 ```bash
 
@@ -269,13 +269,13 @@ cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/
 
 ```
 
-17. Build your app
+16. Build your app
 
 ```bash
 mvn clean package -DskipTests -Denv=cloud
 ```
 
-18. Create apps 
+17. Create apps 
 
 ```bash
 bin/spring-cloud.sh create api-gateway
@@ -286,7 +286,7 @@ bin/spring-cloud.sh create visits-service
 bin/spring-cloud.sh create consumer-service
 ``` 
 
-19. Append storage to the apps
+18. Append storage to the apps
 
 ```bash
 bin/spring-cloud.sh append-persistent-storage customers-service
@@ -295,7 +295,7 @@ bin/spring-cloud.sh append-persistent-storage visits-service
 bin/spring-cloud.sh append-persistent-storage consumer-service
 ```
 
-20. Deploy apps
+19. Deploy apps
 
 ```bash
 bin/spring-cloud.sh deploy api-gateway
@@ -306,7 +306,7 @@ bin/spring-cloud.sh deploy visits-service
 bin/spring-cloud.sh deploy consumer-service
 ```
 
-21. Browse logs
+20. Browse logs
 
 ```bash
 bin/spring-cloud.sh logs api-gateway
