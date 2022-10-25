@@ -1,4 +1,4 @@
-# Project Name
+# Spring Boot PetClinic Microserices Application Deployed to Azure Spring Apps
 
 This example shows you how to deploy an existing Java Spring Boot/Cloud application to Azure Sprint Apps. When you're finished, you can continue to manage the application with Azure services via the Azure CLI, Bicep templates or switch to using the Azure Portal. 
 
@@ -12,6 +12,18 @@ This project provides the following features:
 * Bind applications to Azure services
 * Open and test the applications
 * Monitor the applications
+
+## Architecture and Azure Services
+
+![Components and Elements](media/architecture-components-and-elements.png)
+
+* All app components communicate with KeyVaults to retrieve sensitive information stored in secrets
+* All app components bound to Azure Files as permanent storage
+* All app components with data acess gets second level cache on Redis
+* All components bound to Log Analytics to send logs and metrics
+* Endpoints to `admin-server` and `api-gateway` for extenal access
+* config-server in Azure Spring Apps gets the app configs from repos on GitHub with authentication
+* CI/CD by GitHub Actions are added with appropriate authentication to access the resources on Azure
 
 ## Getting Started
 
