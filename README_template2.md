@@ -157,22 +157,7 @@ quit
 "
 ```
 
-### Quickstart
-
-1. Login to Azure from CLI
-
-```bash
-az login --use-device-code
-```
-
-2. Load all required variables and set defaults in your environment 
-
-```bash
-source ./.env
-az account set --subscription ${SUBSCRIPTION}
-```
-
-3. Adding Storage Account
+12. Adding Storage Account
 
 ```bash
 KEY0=`az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME  | jq -r .[0].value`
@@ -184,7 +169,32 @@ az spring-cloud storage add \
  --name $SHARE_NAME
 ``` 
 
-4. Config your PetClinic App
+13. Add cache config
+
+```bash
+
+KEY0=`az redis list-keys --name ${PROJECT_NAME}-redis --resource-group ${RESOURCE_GROUP} | jq -r .primaryKey`
+echo "{\"singleServerConfig\":{\"address\": \"redis://${PROJECT_NAME}-redis.redis.cache.windows.net:6379\", \"password\": \"$KEY0\"}}" > redisson.json
+cat redisson.json
+
+cp redisson.json spring-petclinic-${CUSTOMERS_SERVICE}/src/main/resources/
+cp redisson.json spring-petclinic-${VETS_SERVICE}/src/main/resources/
+cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/ 
+
+```
+
+### Quickstart
+
+1. Login,  Load all required variables and set defaults in your environment 
+
+```bash
+az login --use-device-code
+
+source ./.env
+az account set --subscription ${SUBSCRIPTION}
+```
+
+2. Config your PetClinic App
 
 Open `application.yml` in spring-petclinic-microservices-config repo
 
@@ -222,7 +232,7 @@ git remote add origin https://github.com/<your gh account name>/spring-petclinic
 git push -u origin master
 ``` 
 
-5. Config your PetClinic App
+3. Config your PetClinic App
 
 Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
 
@@ -258,27 +268,13 @@ az spring-cloud config-server set \
  --name ${SPRING_CLOUD_SERVICE}
 ``` 
 
-6. Add cache config
-
-```bash
-
-KEY0=`az redis list-keys --name ${PROJECT_NAME}-redis --resource-group ${RESOURCE_GROUP} | jq -r .primaryKey`
-echo "{\"singleServerConfig\":{\"address\": \"redis://${PROJECT_NAME}-redis.redis.cache.windows.net:6379\", \"password\": \"$KEY0\"}}" > redisson.json
-cat redisson.json
-
-cp redisson.json spring-petclinic-${CUSTOMERS_SERVICE}/src/main/resources/
-cp redisson.json spring-petclinic-${VETS_SERVICE}/src/main/resources/
-cp redisson.json spring-petclinic-${VISITS_SERVICE}/src/main/resources/ 
-
-```
-
-7. Build your app
+4. Build your app
 
 ```bash
 mvn clean package -DskipTests -Denv=cloud
 ```
 
-8. Create apps 
+5. Create apps 
 
 ```bash
 bin/spring-cloud.sh create api-gateway
@@ -289,7 +285,7 @@ bin/spring-cloud.sh create visits-service
 bin/spring-cloud.sh create consumer-service
 ``` 
 
-9. Append storage to the apps
+6. Append storage to the apps
 
 ```bash
 bin/spring-cloud.sh append-persistent-storage customers-service
@@ -298,7 +294,7 @@ bin/spring-cloud.sh append-persistent-storage visits-service
 bin/spring-cloud.sh append-persistent-storage consumer-service
 ```
 
-10. Deploy apps
+7. Deploy apps
 
 ```bash
 bin/spring-cloud.sh deploy api-gateway
@@ -309,7 +305,7 @@ bin/spring-cloud.sh deploy visits-service
 bin/spring-cloud.sh deploy consumer-service
 ```
 
-11. Browse logs
+8. Browse logs
 
 ```bash
 bin/spring-cloud.sh logs api-gateway
