@@ -1,6 +1,6 @@
 # Spring Boot PetClinic Microserices Application Deployed to Azure Spring Apps
 
-This example shows you how to deploy an existing Java Spring Boot/Cloud application to Azure Sprint Apps. When you're finished, you can continue to manage the application with Azure services via the Azure CLI, Bicep templates or switch to using the Azure Portal. 
+This example shows you how to deploy an existing Java Spring Boot/Cloud application to Azure Spring Apps. When you're finished, you can continue to manage the application with Azure services via the Azure CLI, Bicep templates or switch to using the Azure Portal. 
 
 > Refer to the [App Templates](https://github.com/microsoft/App-Templates) repo Readme for more samples that are compatible with [azure dev cli](https://github.com/Azure/azure-dev/).
 
@@ -416,5 +416,5 @@ curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io
 
 - [document](README_all.md) for instructions with all details
 - [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3
-- [document](docs/petclinic-swagger.md) for managed testing pm Azure Load Test
-- [document](docs/petclinic-swagger.md) for CI/CD on Github Actions
+- [document](docs/petclinic-test.md) for managed testing pm Azure Load Test
+- [document](docs/petclinic-cicd.md) for CI/CD on Github Actions
