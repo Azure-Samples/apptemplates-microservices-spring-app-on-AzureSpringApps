@@ -2,6 +2,8 @@
 
 This example shows you how to deploy an existing Java Spring Boot/Cloud application to Azure Sprint Apps. When you're finished, you can continue to manage the application with Azure services via the Azure CLI, Bicep templates or switch to using the Azure Portal. 
 
+> Refer to the [App Templates](https://github.com/microsoft/App-Templates) repo Readme for more samples that are compatible with [azure dev cli](https://github.com/Azure/azure-dev/).
+
 ## Features 
 
 This project provides the following features:
