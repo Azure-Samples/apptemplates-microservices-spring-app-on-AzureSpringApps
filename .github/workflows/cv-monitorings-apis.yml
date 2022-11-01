@@ -5,8 +5,8 @@ name: CV, Monitoring APIs
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *'
+  # schedule:
+  #   - cron: '*/30 * * * *'
 
 env:
   AZURE_CRED: ${{ secrets.AZURE_CREDENTIALS01 }}

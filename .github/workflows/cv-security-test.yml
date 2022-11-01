@@ -5,8 +5,8 @@ name: CV, Security Test - OWASP ZAP
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 1 * * *'
+#  schedule:
+#    - cron: '0 1 * * *'
 
 env:
   TARGET_DOMAIN: "spcm031-springcloud-api-gateway.azuremicroservices.io"
