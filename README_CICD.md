@@ -6,10 +6,8 @@ This example shows you how to deploy an existing Java Spring Boot/Cloud applicat
 
 This example provides the following features:
 
-  * CI and CI/CD Workflows
-  * Configure workflows for CI
-  * Configure workflows for CI/CD
-  * Reviewing workflows
+  * CI/CD Workflow reviews
+  * Configuring workflows for CI/CD
 
 ## Getting Started
 
