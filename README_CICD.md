@@ -62,5 +62,5 @@ Find this [document](docs/petclinic-cicd.md) for further details
 
 - [document](README_all.md) for instructions with all details
 - [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3
-- [document](docs/petclinic-swagger.md) for managed testing pm Azure Load Test
-- [document](docs/petclinic-swagger.md) for CI/CD on Github Actions
+- [document](docs/petclinic-test.md) for managed testing pm Azure Load Test
+- [document](docs/petclinic-cicd.md) for CI/CD on Github Actions in detail
