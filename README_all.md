@@ -92,7 +92,7 @@ In addition, you will need the following:
 Before you start, install the Azure Spring Apps extension for the Azure CLI using the following command
 
 ```bash
-    az extension add --name spring-cloud
+    az extension add --name spring
 ```
 
 > Note: `spring-cloud` CLI extension `2.1.0` or later is a pre-requisite to enable the latest Java in-process agent for Application Insights. If you already have the CLI extension, you may need to upgrade to the latest using --
@@ -100,7 +100,7 @@ Before you start, install the Azure Spring Apps extension for the Azure CLI usin
 > Note: Brand new extension's available as of today (May-25, 2022) as it's renamed to Azure Spring Apps. Try to update from your command line
 
 ```bash
-    az extension update --name spring-cloud
+    az extension update --name spring
 ```
 
 ## The App, PetClinic
@@ -317,7 +317,7 @@ It consists of
 2. Log Analytics config for Spring Cloud 
 3. Diagnostic Settings sending logs and metrics from Spring Cloud to Log Analytics
 
-To add Application Insights in your environment, on your portal, select your spring cloud instance, click on Application Insights blade on the left, check on 'Enable Application Insights', Click on 'Create New' link, give it a new name for your App Insights instance.
+To add Application Insights in your environment, on your portal, select your spring apps instance, click on Application Insights blade on the left, check on 'Enable Application Insights', Click on 'Create New' link, give it a new name for your App Insights instance.
 
 ![Appplication Insights creation](media/step-appinsights-creation.png)
 
@@ -718,7 +718,7 @@ env:
   AZURE_SUBSCRIPTION_ID: 'your subscription id here'
   AZURE_RESOURCE_GROUP_NAME: 'your resource group name here'
   AZURE_LOCATION: 'target region here'
-  SPRING_CLOUD_SERVICE: 'your spring cloud instance name here'
+  SPRING_CLOUD_SERVICE: 'your spring apps instance name here'
 ..
 
   AZURE_CLIENT_ID: 'your client id'
