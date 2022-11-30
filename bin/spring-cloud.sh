@@ -8,7 +8,7 @@ dotenv () {
 
 if [ $# -lt 2 ]
   then
-    echo "az spring-cloud command shorcut"
+    echo "az spring command shorcut"
     echo "prompt>./spring-cloud.sh [task] [module]"
     echo "  tasks  : show, create, append-persistent-storage, deploy, delete, stop, start, restart, logs"
     echo "  modules: api-gateway, admin-server, customers-service, vets-service, visits-service, consumer-service"
@@ -20,7 +20,7 @@ dotenv
 task=$1
 module=$2
 
-cmd0="az spring-cloud app $task -n $module -s $SPRING_CLOUD_SERVICE -g $RESOURCE_GROUP --verbose "
+cmd0="az spring app $task -n $module -s $SPRING_CLOUD_SERVICE -g $RESOURCE_GROUP --verbose "
 
 # append option for logs
 if [[ "$task" == "logs" ]]; then
