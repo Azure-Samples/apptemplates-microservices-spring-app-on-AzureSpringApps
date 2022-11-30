@@ -45,13 +45,13 @@ This project provides the following features:
 Before you start, install/udpate the Azure Spring Apps extension for the Azure CLI using following commands
 
 ```bash
-az extension add --name spring-cloud
+az extension add --name spring
 ```
 
 Or 
 
 ```bash
-az extension update --name spring-cloud
+az extension update --name spring
 ```    
 
 ### Quickstart
@@ -140,7 +140,7 @@ az deployment group create \
 bin/loganalytics-diagnostics.sh
 ``` 
 
-To add Application Insights in your environment, on your portal, select your spring cloud instance, click on Application Insights blade on the left, check on 'Enable Application Insights', Click on 'Create New' link, give it a new name for your App Insights instance.
+To add Application Insights in your environment, on your portal, select your spring apps instance, click on Application Insights blade on the left, check on 'Enable Application Insights', Click on 'Create New' link, give it a new name for your App Insights instance.
 
 ![Appplication Insights creation](media/step-appinsights-creation.png) 
 
