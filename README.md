@@ -280,43 +280,43 @@ mvn clean package -DskipTests -Denv=cloud
 17. Create apps 
 
 ```bash
-bin/spring-cloud.sh create api-gateway
-bin/spring-cloud.sh create admin-server
-bin/spring-cloud.sh create customers-service
-bin/spring-cloud.sh create vets-service
-bin/spring-cloud.sh create visits-service
-bin/spring-cloud.sh create consumer-service
+bin/spring-apps.sh create api-gateway
+bin/spring-apps.sh create admin-server
+bin/spring-apps.sh create customers-service
+bin/spring-apps.sh create vets-service
+bin/spring-apps.sh create visits-service
+bin/spring-apps.sh create consumer-service
 ``` 
 
 18. Append storage to the apps
 
 ```bash
-bin/spring-cloud.sh append-persistent-storage customers-service
-bin/spring-cloud.sh append-persistent-storage vets-service
-bin/spring-cloud.sh append-persistent-storage visits-service
-bin/spring-cloud.sh append-persistent-storage consumer-service
+bin/spring-apps.sh append-persistent-storage customers-service
+bin/spring-apps.sh append-persistent-storage vets-service
+bin/spring-apps.sh append-persistent-storage visits-service
+bin/spring-apps.sh append-persistent-storage consumer-service
 ```
 
 19. Deploy apps
 
 ```bash
-bin/spring-cloud.sh deploy api-gateway
-bin/spring-cloud.sh deploy admin-server
-bin/spring-cloud.sh deploy customers-service
-bin/spring-cloud.sh deploy vets-service
-bin/spring-cloud.sh deploy visits-service
-bin/spring-cloud.sh deploy consumer-service
+bin/spring-apps.sh deploy api-gateway
+bin/spring-apps.sh deploy admin-server
+bin/spring-apps.sh deploy customers-service
+bin/spring-apps.sh deploy vets-service
+bin/spring-apps.sh deploy visits-service
+bin/spring-apps.sh deploy consumer-service
 ```
 
 20. Browse logs
 
 ```bash
-bin/spring-cloud.sh logs api-gateway
-bin/spring-cloud.sh logs admin-server
-bin/spring-cloud.sh logs customers-service
-bin/spring-cloud.sh logs vets-service
-bin/spring-cloud.sh logs visits-service
-bin/spring-cloud.sh logs consumer-service
+bin/spring-apps.sh logs api-gateway
+bin/spring-apps.sh logs admin-server
+bin/spring-apps.sh logs customers-service
+bin/spring-apps.sh logs vets-service
+bin/spring-apps.sh logs visits-service
+bin/spring-apps.sh logs consumer-service
 ``` 
 
 ## Demo

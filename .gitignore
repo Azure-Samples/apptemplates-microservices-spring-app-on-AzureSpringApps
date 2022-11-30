@@ -8,6 +8,7 @@ memo*.txt
 *.sh
 !run.sh
 !spring-cloud.sh
+!spring-apps.sh
 !init.sh
 !upload.sh
 !remove-all-resources.sh

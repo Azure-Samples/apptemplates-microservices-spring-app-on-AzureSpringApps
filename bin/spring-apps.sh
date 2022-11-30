@@ -9,7 +9,7 @@ dotenv () {
 if [ $# -lt 2 ]
   then
     echo "az spring command shorcut"
-    echo "prompt>./spring-cloud.sh [task] [module]"
+    echo "prompt>./spring-apps.sh [task] [module]"
     echo "  tasks  : show, create, append-persistent-storage, deploy, delete, stop, start, restart, logs"
     echo "  modules: api-gateway, admin-server, customers-service, vets-service, visits-service, consumer-service"
     exit
