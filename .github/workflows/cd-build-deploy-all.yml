@@ -11,14 +11,14 @@ on:
 #    branches: [ main ]
 
 env:
-  PROJECT_NAME: 'spcm031'
-  AZURE_RESOURCE_GROUP_NAME: 'spcm031-rg'
-  AZURE_SUBSCRIPTION_ID: 'b6d4cd53-eeab-41d1-93a8-665daf75fce1'
+  PROJECT_NAME: 'spcm032'
+  AZURE_RESOURCE_GROUP_NAME: 'spcm032-rg'
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   AZURE_LOCATION: 'westus'
 
   ASC_PACKAGE_PATH: ${{ github.workspace }}
 
-  SPRING_CLOUD_SERVICE: spcm031-springcloud
+  SPRING_CLOUD_SERVICE: spcm032-springcloud
 
   API_GATEWAY: api-gateway
   ADMIN_SERVER: admin-server
@@ -34,10 +34,10 @@ env:
   VISITS_SERVICE_JAR: spring-petclinic-visits-service/target/spring-petclinic-visits-service-2.5.1.jar  
   CONSUMER_SERVICE_JAR: spring-petclinic-consumer/target/spring-petclinic-consumer-2.5.1.jar  
 
-  AZURE_CLIENT_ID: 54522591-55c6-4f64-a078-b9b535e11ae1
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }} 
   AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CREDENTIALS02 }}
-  AZURE_TENANT_ID: 72f988bf-86f1-41af-91ab-2d7cd011db47
-  KEYVAULT_URI: https://spcm031-keyvault.vault.azure.net/  
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }} 
+  KEYVAULT_URI: https://spcm032-keyvault.vault.azure.net/  
 
   AZURE_CRED: ${{ secrets.AZURE_CREDENTIALS01 }}
   
@@ -85,7 +85,7 @@ jobs:
           mvn -B package -DskipTests -Denv=cloud
           
       - name: deploy to production with artifact, api-gateway
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
@@ -96,7 +96,7 @@ jobs:
           jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql
 
       - name: deploy to production with artifact, admin-server
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
@@ -107,7 +107,7 @@ jobs:
           jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql
 
       - name: deploy to production with artifact, customers-service 
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
@@ -119,7 +119,7 @@ jobs:
           environment-variables: "-AZURE_CLIENT_ID ${{ env.AZURE_CLIENT_ID }} -AZURE_CLIENT_SECRET ${{ env.AZURE_CLIENT_SECRET }} -AZURE_TENANT_ID ${{ env.AZURE_TENANT_ID }} -KEYVAULT_URI ${{ env.KEYVAULT_URI }}"
 
       - name: deploy to production with artifact, vets-service
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
@@ -131,7 +131,7 @@ jobs:
           environment-variables: "-AZURE_CLIENT_ID ${{ env.AZURE_CLIENT_ID }} -AZURE_CLIENT_SECRET ${{ env.AZURE_CLIENT_SECRET }} -AZURE_TENANT_ID ${{ env.AZURE_TENANT_ID }} -KEYVAULT_URI ${{ env.KEYVAULT_URI }}"
 
       - name: deploy to production with artifact, visits-service 
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
@@ -143,7 +143,7 @@ jobs:
           environment-variables: "-AZURE_CLIENT_ID ${{ env.AZURE_CLIENT_ID }} -AZURE_CLIENT_SECRET ${{ env.AZURE_CLIENT_SECRET }} -AZURE_TENANT_ID ${{ env.AZURE_TENANT_ID }} -KEYVAULT_URI ${{ env.KEYVAULT_URI }}"
 
       - name: deploy to production with artifact, consumer-service
-        uses: azure/spring-cloud-deploy@v1
+        uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION_ID }}
           action: Deploy
