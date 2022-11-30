@@ -16,7 +16,15 @@ This example provides the following features:
 - Complete all instructions listed [here](README.md)
 - Service Principal generated at early steps [here](README.md)
 
-You need two Azure credentials stored on the repo. One's for Azure login from CLI, the other's for AZURE_CLIENT_SECRET to pass to the apps as the environment variables. From the top menu on the repo, select Settings, click on Secrets on left menu and click on Actions. Click on New repository secret, and save your Service Principal details as AZURE_CREDENTIALS01 that you saved in the initial steps. And another is AZURE_CLIENT_SECRET as AZURE_CREDENTIALS02, repeat the steps and save
+You need to add these variables to store first in your repo. Find Settings -> Security -> Secrets -> Actions
+
+* AZURE_SUBSCRIPTION_ID
+* AZURE_TENANT_ID
+* AZURE_CLIENT_ID
+* AZURE_CREDENTIALS01
+* AZURE_CREDENTIALS02
+
+You've already got these when you create Service Principal in the inital steps. AZURE_CREDENTIALS01 is return of `az ad sp create-for-rbac` in json format. AZURE_CREDENTIALS02 is AZURE_CLIENT_SECRET/`clientSecret` alone 
 
 ![Repo Secretes](media/step-gh-repo-secrets.png)
 
