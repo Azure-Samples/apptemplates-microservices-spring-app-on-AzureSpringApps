@@ -17,7 +17,7 @@ export LOG_ANALYTICS_RESOURCE_ID=$(az monitor log-analytics workspace show \
     --resource-group ${RESOURCE_GROUP} \
     --workspace-name ${LOG_ANALYTICS} | jq -r '.id')
 
-export SPRING_CLOUD_RESOURCE_ID=$(az spring-cloud show \
+export SPRING_CLOUD_RESOURCE_ID=$(az spring show \
     --name ${SPRING_CLOUD_SERVICE} \
     --resource-group ${RESOURCE_GROUP} | jq -r '.id')
 

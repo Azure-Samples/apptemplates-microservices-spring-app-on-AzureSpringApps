@@ -78,7 +78,7 @@ mvn clean package -DskipTests -Denv=cloud
 mv .env-example .env
 ``` 
 
-Open .env with your text editor and update PROJECT_NAME at least which's prefix for all resources
+Open .env with your text editor and update PROJECT_NAME, SUBSCRIPTION, SP_NAME, MY_UPN at least and REGION optionally only if neccessary. PROJECT_NAME is prefix for all resources to be created. SUBSCRIPTION is your Azure Subscription ID, SP_NAME is Service Principal name to be created, MY_UPN is your Azure login id in email address format 
 
 ```yaml
 PROJECT_NAME=[your project name, to give names to all resoures]
@@ -176,7 +176,7 @@ quit
 ```bash
 KEY0=`az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME  | jq -r .[0].value`
 echo $KEY0
-az spring-cloud storage add \
+az spring storage add \
  --storage-type StorageAccount \
  --account-key $KEY0 \
  --account-name $STORAGE_ACCOUNT_NAME \
@@ -252,7 +252,7 @@ Your developer token is from your GitHub account setttings. See [this](https://d
 Add app configs to your Azure Spring Apps
 
 ```bash
-az spring-cloud config-server set \
+az spring config-server set \
  --config-file application.yml \
  --name ${SPRING_CLOUD_SERVICE}
 ``` 

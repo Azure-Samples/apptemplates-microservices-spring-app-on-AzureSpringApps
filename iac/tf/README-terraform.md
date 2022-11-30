@@ -176,42 +176,42 @@ Deploy microservice applications to Azure.
 
 ```bash
     cd ../
-    az spring-cloud app deployment create -n ${API_GATEWAY} --app ${API_GATEWAY} -s ${SPRING_CLOUD_SERVICE} \
+    az spring app deployment create -n ${API_GATEWAY} --app ${API_GATEWAY} -s ${SPRING_CLOUD_SERVICE} \
          -g ${RESOURCE_GROUP} --jar-path ${API_GATEWAY_JAR}  --skip-clone-settings
 
-    az spring-cloud app set-deployment -d ${API_GATEWAY} -n ${API_GATEWAY} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
+    az spring app set-deployment -d ${API_GATEWAY} -n ${API_GATEWAY} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
 
-    az spring-cloud app update --name ${API_GATEWAY} --is-public true
+    az spring app update --name ${API_GATEWAY} --is-public true
 
-    az spring-cloud app deployment create -n ${ADMIN_SERVER} --app ${ADMIN_SERVER} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${ADMIN_SERVER_JAR}  --skip-clone-settings
+    az spring app deployment create -n ${ADMIN_SERVER} --app ${ADMIN_SERVER} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${ADMIN_SERVER_JAR}  --skip-clone-settings
 
-    az spring-cloud app set-deployment -d ${ADMIN_SERVER} -n ${ADMIN_SERVER} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
+    az spring app set-deployment -d ${ADMIN_SERVER} -n ${ADMIN_SERVER} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
 
-    az spring-cloud app deployment create -n ${CUSTOMERS_SERVICE} --app ${CUSTOMERS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${CUSTOMERS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
+    az spring app deployment create -n ${CUSTOMERS_SERVICE} --app ${CUSTOMERS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${CUSTOMERS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
                 MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
                 MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
                 MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}
 
-    az spring-cloud app set-deployment -d ${CUSTOMERS_SERVICE} -n ${CUSTOMERS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
+    az spring app set-deployment -d ${CUSTOMERS_SERVICE} -n ${CUSTOMERS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
 
-    az spring-cloud app deployment create -n ${VETS_SERVICE} --app ${VETS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${VETS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
+    az spring app deployment create -n ${VETS_SERVICE} --app ${VETS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${VETS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
                 MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
                 MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
                 MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}
 
-    az spring-cloud app set-deployment -d ${VETS_SERVICE} -n ${VETS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
+    az spring app set-deployment -d ${VETS_SERVICE} -n ${VETS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
 
-    az spring-cloud app deployment create -n ${VISITS_SERVICE} --app ${VISITS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${VISITS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
+    az spring app deployment create -n ${VISITS_SERVICE} --app ${VISITS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP} --jar-path ${VISITS_SERVICE_JAR}   --skip-clone-settings --env MYSQL_SERVER_FULL_NAME=${MYSQL_SERVER_FULL_NAME} \
                 MYSQL_DATABASE_NAME=${MYSQL_DATABASE_NAME} \
                 MYSQL_SERVER_ADMIN_LOGIN_NAME=${MYSQL_SERVER_ADMIN_LOGIN_NAME} \
                 MYSQL_SERVER_ADMIN_PASSWORD=${MYSQL_SERVER_ADMIN_PASSWORD}
 
-    az spring-cloud app set-deployment -d ${VISITS_SERVICE} -n ${VISITS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
+    az spring app set-deployment -d ${VISITS_SERVICE} -n ${VISITS_SERVICE} -s ${SPRING_CLOUD_SERVICE} -g ${RESOURCE_GROUP}
 
 ```
 
 ```bash
-    az spring-cloud app show --name ${APP_NAME} | grep url
+    az spring app show --name ${APP_NAME} | grep url
 ```
 
 Navigate to the URL provided by the previous command to open the Pet Clinic microservice application.

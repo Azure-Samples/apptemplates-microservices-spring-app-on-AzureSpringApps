@@ -359,7 +359,7 @@ Adding Storage Account
 ```bash
 KEY0=`az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME  | jq -r .[0].value`
 echo $KEY0
-az spring-cloud storage add \
+az spring storage add \
  --storage-type StorageAccount \
  --account-key $KEY0 \
  --account-name $STORAGE_ACCOUNT_NAME \
@@ -442,7 +442,7 @@ Your developer token is from your GitHub account setttings. See [this](https://d
 Once config-server configuration's ready, run this from your command line
 
 ```bash
-az spring-cloud config-server set \
+az spring config-server set \
  --config-file application.yml \
  --name ${SPRING_CLOUD_SERVICE}
 ```
