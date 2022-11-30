@@ -493,17 +493,17 @@ App deployment consists of follwoing steps
 3. Deploy the apps
 4. Browse logs 
 
-These steps are repeating, for your convenience, there's a bash script `bin/spring-cloud.sh`, which helps you to run those steps easily
+These steps are repeating, for your convenience, there's a bash script `bin/spring-apps.sh`, which helps you to run those steps easily
 
 #### Create Apps
 
 ```bash
-bin/spring-cloud.sh create api-gateway
-bin/spring-cloud.sh create admin-server
-bin/spring-cloud.sh create customers-service
-bin/spring-cloud.sh create vets-service
-bin/spring-cloud.sh create visits-service
-bin/spring-cloud.sh create consumer-service
+bin/spring-apps.sh create api-gateway
+bin/spring-apps.sh create admin-server
+bin/spring-apps.sh create customers-service
+bin/spring-apps.sh create vets-service
+bin/spring-apps.sh create visits-service
+bin/spring-apps.sh create consumer-service
 ```
 
 Run all of these at once. It normally takes minutes. Both config and discover servers are a part of Azure Spring Apps. You don't have to deploy both
@@ -511,10 +511,10 @@ Run all of these at once. It normally takes minutes. Both config and discover se
 #### Append persistent storage to your apps
 
 ```bash
-bin/spring-cloud.sh append-persistent-storage customers-service
-bin/spring-cloud.sh append-persistent-storage vets-service
-bin/spring-cloud.sh append-persistent-storage visits-service
-bin/spring-cloud.sh append-persistent-storage consumer-service
+bin/spring-apps.sh append-persistent-storage customers-service
+bin/spring-apps.sh append-persistent-storage vets-service
+bin/spring-apps.sh append-persistent-storage visits-service
+bin/spring-apps.sh append-persistent-storage consumer-service
 ```
 
 Run all of these at once. We only bind the storage to the app components, not for `api-gateway`, `admin-server`
@@ -522,12 +522,12 @@ Run all of these at once. We only bind the storage to the app components, not fo
 #### Deploy apps
 
 ```bash
-bin/spring-cloud.sh deploy api-gateway
-bin/spring-cloud.sh deploy admin-server
-bin/spring-cloud.sh deploy customers-service
-bin/spring-cloud.sh deploy vets-service
-bin/spring-cloud.sh deploy visits-service
-bin/spring-cloud.sh deploy consumer-service
+bin/spring-apps.sh deploy api-gateway
+bin/spring-apps.sh deploy admin-server
+bin/spring-apps.sh deploy customers-service
+bin/spring-apps.sh deploy vets-service
+bin/spring-apps.sh deploy visits-service
+bin/spring-apps.sh deploy consumer-service
 ```
 
 Run all of these at once. It normally takes minutes
@@ -535,17 +535,17 @@ Run all of these at once. It normally takes minutes
 #### Browse logs
 
 ```bash
-bin/spring-cloud.sh logs api-gateway
-bin/spring-cloud.sh logs admin-server
-bin/spring-cloud.sh logs customers-service
-bin/spring-cloud.sh logs vets-service
-bin/spring-cloud.sh logs visits-service
-bin/spring-cloud.sh logs consumer-service
+bin/spring-apps.sh logs api-gateway
+bin/spring-apps.sh logs admin-server
+bin/spring-apps.sh logs customers-service
+bin/spring-apps.sh logs vets-service
+bin/spring-apps.sh logs visits-service
+bin/spring-apps.sh logs consumer-service
 ```
 
 You can run these separetely if neccessary
 
-Use `bin/spring-cloud.sh` command for `delete`, `stop`, `start`, `restart` of your apps
+Use `bin/spring-apps.sh` command for `delete`, `stop`, `start`, `restart` of your apps
 
 Once you have done all app deployments, you'll see something like this 
 
