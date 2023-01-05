@@ -1,4 +1,4 @@
-# Spring Boot PetClinic Microserices Application Deployed to Azure Spring Apps
+# Spring Boot PetClinic Microservices Application Deployed to Azure Spring Apps
 
 This example shows you how to deploy an existing Java Spring Boot/Cloud application to Azure Sprint Apps. When you're finished, you can continue to manage the application with Azure services via the Azure CLI, Bicep templates or switch to using the Azure Portal. 
 
