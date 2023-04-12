@@ -78,7 +78,7 @@ mvn clean package -DskipTests -Denv=cloud
 mv .env-sample .env
 ``` 
 
-Open .env with your text editor and update PROJECT_NAME, SUBSCRIPTION, SP_NAME, MY_UPN at least and REGION optionally only if neccessary. PROJECT_NAME is prefix for all resources to be created. SUBSCRIPTION is your Azure Subscription ID, SP_NAME is Service Principal name to be created, MY_UPN is your Azure login id in email address format 
+Open .env with your text editor and update PROJECT_NAME, SUBSCRIPTION, SP_NAME, MY_UPN at least and REGION optionally only if necessary. PROJECT_NAME is prefix for all resources to be created. SUBSCRIPTION is your Azure Subscription ID, SP_NAME is Service Principal name to be created, MY_UPN is your Azure login id in email address format 
 
 ```yaml
 PROJECT_NAME=[your project name, to give names to all resoures]
