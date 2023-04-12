@@ -8,9 +8,9 @@ param redis_sku object = {
   capacity: 1
 }
 
-param redis_version string = '4.0.14'
+param redis_version string = '6.0'
 
-resource redis_name_resource 'Microsoft.Cache/Redis@2020-12-01' = {
+resource redis_name_resource 'Microsoft.Cache/Redis@2022-06-01' = {
   name: redis_name
   location: gLocation
   properties: {
