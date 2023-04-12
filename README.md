@@ -101,6 +101,9 @@ az login --use-device-code
 bin/init.sh
 ```
 
+Open .env with your text editor and update AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID and AZURE_OBJECT_ID
+as given by the output of the init.sh script.
+
 6. Load all required variables and set defaults in your environment 
 
 ```bash
@@ -142,7 +145,7 @@ bin/loganalytics-diagnostics.sh
 
 To add Application Insights in your environment, on your portal, select your spring apps instance, click on Application Insights blade on the left, check on 'Enable Application Insights', Click on 'Create New' link, give it a new name for your App Insights instance.
 
-![Appplication Insights creation](media/step-appinsights-creation.png) 
+![Application Insights creation](media/step-appinsights-creation.png) 
 
 10. Give permission to access KeyVault secrets
 
@@ -247,7 +250,7 @@ spring:
     active: native 
 ```     
 
-Your developer token is from your GitHub account setttings. See [this](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for further details 
+Your developer token is from your GitHub account settings. See [this](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for further details 
 
 Add app configs to your Azure Spring Apps
 
@@ -419,4 +422,4 @@ curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io
 - [document](README_all.md) for instructions with all details
 - [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3
 - [document](docs/petclinic-test.md) for managed testing pm Azure Load Test
-- [document](docs/petclinic-cicd.md) for CI/CD on Github Actions in detail
+- [document](docs/petclinic-cicd.md) for CI/CD on GitHub Actions in detail
