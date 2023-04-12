@@ -42,7 +42,7 @@ This project provides the following features:
 
 ### Installation
 
-Before you start, install/udpate the Azure Spring Apps extension for the Azure CLI using following commands
+Before you start, install/update the Azure Spring Apps extension for the Azure CLI using following commands
 
 ```bash
 az extension add --name spring
