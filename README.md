@@ -23,7 +23,7 @@ This project provides the following features:
 * All app components bound to Azure Files as permanent storage
 * All app components with data access gets second level cache on Redis
 * All components bound to Log Analytics to send logs and metrics
-* Endpoints to `admin-server` and `api-gateway` for extenal access
+* Endpoints to `admin-server` and `api-gateway` for external access
 * config-server in Azure Spring Apps gets the app configs from repos on GitHub with authentication
 * CI/CD by GitHub Actions are added with appropriate authentication to access the resources on Azure
 
