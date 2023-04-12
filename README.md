@@ -177,13 +177,14 @@ quit
 12. Adding Storage Account
 
 ```bash
-KEY0=`az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME  | jq -r .[0].value`
+KEY0=$(az storage account keys list -g $RESOURCE_GROUP --account-name $STORAGE_ACCOUNT_NAME | jq -r '.[0].value')
 echo $KEY0
 az spring storage add \
  --storage-type StorageAccount \
  --account-key $KEY0 \
  --account-name $STORAGE_ACCOUNT_NAME \
- --name $SHARE_NAME
+ --name $SHARE_NAME \
+ --service $SPRING_CLOUD_SERVICE
 ``` 
 
 13. Config your PetClinic App
