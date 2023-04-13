@@ -227,10 +227,10 @@ git push -u origin master
 
 14. Config your Azure Spring App
 
-Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
+Back to `spring-petclinic-microservices`, make a copy `application.yml.sample` to `application.yml` 
 
 ```bash
-cp application.yml.example application.yml
+cp application.yml.sample application.yml
 ```
 
 Customize `application.yml` 
