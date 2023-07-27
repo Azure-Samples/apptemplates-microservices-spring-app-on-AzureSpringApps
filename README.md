@@ -40,6 +40,8 @@ This project provides the following features:
 - [Git latest](https://git-scm.com/)
 - [jq utility latest](https://stedolan.github.io/jq/download/) 
 
+For environment, Codespace and Ubuntu/WSL2 are recommended to use. At Codespace, run `chmod +x dotenv` before you start
+
 ### Installation
 
 Before you start, install/udpate the Azure Spring Apps extension for the Azure CLI using following commands
