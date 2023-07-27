@@ -423,4 +423,4 @@ curl -X GET https://${SPRING_CLOUD_SERVICE}-${API_GATEWAY}.azuremicroservices.io
 - [document](README_all.md) for instructions with all details
 - [document](docs/petclinic-swagger.md) for APIM integration with Swagger/OAS3
 - [document](docs/petclinic-test.md) for managed testing pm Azure Load Test
-- [document](docs/petclinic-cicd.md) for CI/CD on Github Actions in detail
+- [document](docs/petclinic-cicd.md) for CI/CD on Github Actions in detail*
