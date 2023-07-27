@@ -1,6 +1,6 @@
 param gLocation string = 'westus'
 
-param mysql_name string = 'mysql-usw-001'
+param mysql_name string = 'mysql-usw-004'
 
 param mysql_sku object = {
   name: 'GP_Gen5_4'
@@ -9,7 +9,7 @@ param mysql_sku object = {
   capacity: 4
 }
 
-param mysql_version string = '5.7'
+param mysql_version string = '5.7'  // 5.7 8.0.21
 
 param mysql_adminUsername string = 'azureuser'
 param mysql_adminPassword string = 'pass&1234'

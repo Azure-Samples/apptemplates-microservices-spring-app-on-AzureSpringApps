@@ -29,6 +29,7 @@ resource vaults_name_resource 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
       bypass: 'AzureServices'
       defaultAction: 'Allow' 
     }
+
     accessPolicies: [
       {
         tenantId: servicePrincipal_tenantId
@@ -47,6 +48,7 @@ resource vaults_name_resource 'Microsoft.KeyVault/vaults@2021-06-01-preview' = {
         }
       }
     ]
+
     enabledForDeployment: false
     enabledForDiskEncryption: false
     enabledForTemplateDeployment: false

@@ -8,14 +8,16 @@ param redis_sku object = {
   capacity: 1
 }
 
-param redis_version string = '4.0.14'
+param redis_version string = 'latest'
 
-resource redis_name_resource 'Microsoft.Cache/Redis@2020-12-01' = {
+resource redis_name_resource 'Microsoft.Cache/redis@2022-06-01' = {
   name: redis_name
+  tags: {
+    depl: 'petclinic'
+  }   
   location: gLocation
+
   properties: {
-    redisVersion: redis_version
-    sku: redis_sku
     enableNonSslPort: true
     publicNetworkAccess: 'Enabled'
     redisConfiguration: {
@@ -23,5 +25,7 @@ resource redis_name_resource 'Microsoft.Cache/Redis@2020-12-01' = {
       'maxfragmentationmemory-reserved': '50'
       'maxmemory-delta': '50'
     }
+    redisVersion: redis_version
+    sku: redis_sku
   }
 }

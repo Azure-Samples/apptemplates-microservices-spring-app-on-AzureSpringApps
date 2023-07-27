@@ -83,6 +83,13 @@ class DataSourceConfig {
 		dsConfig.setJdbcUrl(url);
 		dsConfig.setUsername(username);
 		dsConfig.setPassword(retrievedSecret.getValue());
+
+		System.out.println("******************");
+		System.out.println("URL:"+url);
+		System.out.println("UserName:"+dsConfig.getUsername());
+		System.out.println("Password:"+dsConfig.getPassword());
+		System.out.println("******************");
+
 		HikariDataSource ds = new HikariDataSource(dsConfig);
 		return ds;
 

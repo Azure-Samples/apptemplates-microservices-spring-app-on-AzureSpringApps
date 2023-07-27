@@ -75,7 +75,7 @@ mvn clean package -DskipTests -Denv=cloud
 3. Config your project
 
 ```bash
-mv .env-example .env
+mv .env-sample .env
 ``` 
 
 Open .env with your text editor and update PROJECT_NAME, SUBSCRIPTION, SP_NAME, MY_UPN at least and REGION optionally only if neccessary. PROJECT_NAME is prefix for all resources to be created. SUBSCRIPTION is your Azure Subscription ID, SP_NAME is Service Principal name to be created, MY_UPN is your Azure login id in email address format 
@@ -88,6 +88,9 @@ REGION=westus
 ..
 ..
 ``` 
+
+PROJECT_NAME, SUBSCRIPTION, SP_NAME, REGION, MY_UPN, REGION, MYSQL_SERVER_ADMIN_NAME, MYSQL_SERVER_ADMIN_PASSWORD, GIT_REPO are minimum to update. GIT_REPO is absolute path to config repo in your environment. MY_UPN is your User Pricipal Name for Azure portal login. Find yours from AAD (Entra ID) portal
+
 
 4. Login to Azure from CLI
 
@@ -180,7 +183,8 @@ az spring storage add \
  --storage-type StorageAccount \
  --account-key $KEY0 \
  --account-name $STORAGE_ACCOUNT_NAME \
- --name $SHARE_NAME
+ --name $SHARE_NAME \
+ -s $SPRING_CLOUD_SERVICE
 ``` 
 
 13. Config your PetClinic App
@@ -226,7 +230,7 @@ git push -u origin master
 Back to `spring-petclinic-microservices`, make a copy `application.yml.example` to `application.yml` 
 
 ```bash
-cp application.yml.example application.yml
+cp application.yml.sample application.yml
 ```
 
 Customize `application.yml` 

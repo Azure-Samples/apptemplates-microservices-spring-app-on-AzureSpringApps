@@ -28,7 +28,8 @@ echo $STR0 | jq .
 T0=`echo $STR0 | jq -r .clientId`
 T1=`echo $STR0 | jq -r .clientSecret`
 T2=`echo $STR0 | jq -r .tenantId`
-T3=`az ad sp show --id $T0 | jq -r .objectId`
+#T3=`az ad sp show --id $T0 | jq -r .objectId`
+T3=`az ad sp list --display-name $SP_NAME | jq -r .[].id`
 
 ./dotenv set AZURE_CLIENT_ID=$T0 AZURE_CLIENT_SECRET=$T1 AZURE_TENANT_ID=$T2 AZURE_OBJECT_ID=$T3
 
